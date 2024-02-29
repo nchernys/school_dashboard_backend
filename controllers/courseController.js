@@ -23,7 +23,9 @@ const filterByDepartment = async (req, res) => {
 
 // get all courses
 const getAllCourses = async (req, res) => {
-  const courses = await Course.find({}).sort({ title: 1 }); // leave the curly braces empty because we want to get all Courses unconditionally; sort by name ASC
+  const courses = await Course.find({})
+    .populate("department")
+    .sort({ title: 1 });
 
   res.status(200).json(courses);
 };

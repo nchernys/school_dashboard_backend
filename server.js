@@ -6,6 +6,7 @@ const app = express();
 const studentsRoutes = require("./routes/studentsRoutes");
 const coursesRoutes = require("./routes/coursesRoutes");
 const departmentsRoutes = require("./routes/departmentsRoutes");
+const assignmentsRoutes = require("./routes/assignmentsRoutes");
 
 app.use(express.json());
 
@@ -15,10 +16,9 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/students", studentsRoutes);
-
 app.use("/api/courses", coursesRoutes);
-
 app.use("/api/departments", departmentsRoutes);
+app.use("/api/assignments", assignmentsRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

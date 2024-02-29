@@ -6,8 +6,8 @@ const Course = require("../models/coursesModels");
 
 // get all students
 const getAllStudents = async (req, res) => {
-  const students = await Student.find({}).sort({ name: 1 }); // leave the curly braces empty because we want to get all students unconditionally; sort by name ASC
-
+  const students = await Student.find({}).sort({ name: 1 }).populate("courses");
+  console.log("Students with Courses:", students);
   res.status(200).json(students);
 };
 
@@ -95,9 +95,11 @@ const addCourseToStudent = async (req, res) => {
 
   if (!student.courses.includes(courseId)) {
     student.courses.push(courseId);
+    console.log("COURSE PUSHED!");
   }
 
   await student.save();
+  console.log("STUDENT SAVED!");
 
   res.status(200).json(student);
 };
@@ -135,7 +137,7 @@ const filterByCourse = async (req, res) => {
     return res.status(404).json({ error: "No such student." });
   }
 
-  const students = await Student.find({ courses: id });
+  const students = await Student.find({ courses: id }).populate("courses");
 
   if (students.length === 0) {
     return res.status(404).json({ error: "No student takes the course." });
